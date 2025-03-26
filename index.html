@@ -1,0 +1,375 @@
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>41st Elite Corps - Clone Wars</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="style.css">
+<script>
+// Function to update troop list from the database
+function updateTroopList() {
+    fetch('troops.php') // Adjust the endpoint if necessary
+        .then(response => response.json())
+        .then(data => {
+            const troopList = document.getElementById('troopList');
+            troopList.innerHTML = ''; // Clear current list
+            data.forEach(troop => {
+                const troopDiv = document.createElement('div');
+                troopDiv.className = 'bg-green-700 p-4 rounded-lg mb-2';
+                troopDiv.innerHTML = `
+                    <h2 class="text-xl font-semibold">${troop.name}</h2>
+                    <p>Ents: ${troop.ents}</p>
+                    <p>Roles PJ: ${troop.roles}</p>
+                    <p>Misiones: ${troop.missions}</p>
+                    <p>Miniroles: ${troop.miniroles}</p>
+                    <p>Try: ${troop.try}</p>
+                    <p>Caps: ${troop.caps}</p>
+                    <p>Estado: ${troop.status}</p>
+                    <p>Requisitos: ${troop.requirements}</p>
+                    <p>Oficial a cargo: ${troop.officer}</p>
+                `;
+                troopList.appendChild(troopDiv);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching troop data:', error);
+        });
+}
+
+// Call updateTroopList when the page loads
+window.onload = function() {
+    updateTroopList();
+};
+</script>
+</head>
+<body class="bg-green-900 text-white font-roboto">
+    <!-- Navbar -->
+    <nav class="w-full bg-green-800 p-4 flex justify-between items-center">
+        <a href="https://www.unity.net.ar/" id="homeLink" class="text-xl font-bold" target="_blank">Home</a>
+        <img alt="41st Elite Corps Logo small" class="h-10" src="https://media.discordapp.net/attachments/1171540887914950727/1316754341516017704/OIP-modified.png?ex=675c328b&is=675ae10b&hm=5a44aba0de67a62ec2491a60ff2bfabc2147d94b0f6b9495a4f206723caf78de&=&format=webp&quality=lossless&width=592&height=592"/>
+        <a href="#loginContent" id="loginLink" class="text-xl font-bold">Acceso Plataforma</a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="hidden min-h-screen flex-col items-center justify-center" id="mainContent">
+        <div class="w-full max-w-4xl bg-green-800 p-8 rounded-lg shadow-lg">
+            <div class="flex justify-between mb-6">
+                <button class="py-2 px-4 bg-green-600 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500" id="activityTab">Actividad Actual</button>
+                <button class="py-2 px-4 bg-green-600 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500" id="formTab">Formulario</button>
+                <button class="py-2 px-4 bg-green-600 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500" id="manageTroopsTab">Gestionar Tropas</button>
+            </div>
+            <div class="space-y-4" id="activityContent">
+                <h1 class="text-2xl font-bold mb-4">Actividad Actual</h1>
+                <div id="troopList"></div> <!-- Lista de tropas -->
+            </div>
+            <div class="hidden space-y-4" id="formContent">
+                <h1 class="text-2xl font-bold mb-4">Formulario</h1>
+                <select id="troopSelect" class="w-full p-2 mt-1 bg-green-700 rounded border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <option value="" disabled selected>Seleccionar Tropa</option>
+                </select>
+                <div id="troopDetails" class="hidden">
+                    <h2 class="text-xl font-semibold">Detalles de la Tropa</h2>
+                    <label for="ents">Ents:</label>
+                    <input type="number" id="ents" class="w-full p-2 mt-1 bg-green-700 rounded border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"/>
+                    <label for="roles">Roles PJ:</label>
+                    <input type="number" id="roles" class="w-full p-2 mt-1 bg-green-700 rounded border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"/>
+                    <label for="missions">Misiones:</label>
+                    <input type="number" id="missions" class="w-full p-2 mt-1 bg-green-700 rounded border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"/>
+                    <label for="miniroles">Miniroles:</label>
+                    <input type="number" id="miniroles" class="w-full p-2 mt-1 bg-green-700 rounded border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"/>
+                    <label for="try">Try:</label>
+                    <input type="number" id="try" class="w-full p-2 mt-1 bg-green-700 rounded border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"/>
+                    <label for="caps">Caps:</label>
+                    <input type="number" id="caps" class="w-full p-2 mt-1 bg-green-700 rounded border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"/>
+                    <label for="status">Estado:</label>
+                    <input type="text" id="status" class="w-full p-2 mt-1 bg-green-700 rounded border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"/>
+                    <label for="requirements">Requisitos:</label>
+                    <input type="text" id="requirements" class="w-full p-2 mt-1 bg-green-700 rounded border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"/>
+                    <label for="officer">Oficial a cargo:</label>
+                    <input type="text" id="officer" class="w-full p-2 mt-1 bg-green-700 rounded border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"/>
+                    <button id="saveTroopButton" class="w-full py-2 bg-green-600 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">Guardar Cambios</button>
+                </div>
+            </div>
+            <div class="hidden space-y-4" id="manageTroopsContent">
+                <h1 class="text-2xl font-bold mb-4">Gestionar Tropas</h1>
+                <div class="space-y-4">
+                    <h2 class="text-xl font-semibold">Agregar Tropa</h2>
+                    <input type="text" id="newTroopName" class="w-full p-2 mt-1 bg-green-700 rounded border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Nombre de la nueva tropa"/>
+                    <button id="addTroopButton" class="w-full py-2 bg-green-600 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">Agregar Tropa</button>
+                </div>
+                <div class="space-y-4">
+                    <h2 class="text-xl font-semibold">Eliminar Tropa</h2>
+                    <select id="removeTroopSelect" class="w-full p-2 mt-1 bg-green-700 rounded border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <option value="" disabled selected>Seleccionar Tropa</option>
+                    </select>
+                    <button id="removeTroopButton" class="w-full py-2 bg-green-600 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">Eliminar Tropa</button>
+                </div>
+                <div class="space-y-4">
+                    <h2 class="text-xl font-semibold">Modificar Tropa</h2>
+                    <select id="modifyTroopSelect" class="w-full p-2 mt-1 bg-green-700 rounded border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <option value="" disabled selected>Seleccionar Tropa</option>
+                    </select>
+                    <input type="text" id="newTroopNameModify" class="w-full p-2 mt-1 bg-green-700 rounded border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Nuevo nombre de la tropa"/>
+                    <button id="modifyTroopButton" class="w-full py-2 bg-green-600 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">Modificar Tropa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Section -->
+    <div class="min-h-screen flex flex-col items-center justify-center" id="loginContent">
+        <div class="w-full max-w-md bg-green-800 p-8 rounded-lg shadow-lg">
+            <h1 class="text-2xl font-bold mb-4">Iniciar Sesión</h1>
+            <input type="text" id="username" class="w-full p-2 mb-4 bg-green-700 rounded border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Nombre de usuario"/>
+            <input type="password" id="password" class="w-full p-2 mb-4 bg-green-700 rounded border border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Contraseña"/>
+            <button id="loginButton" class="w-full py-2 bg-green-600 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">Iniciar Sesión</button>
+            <p id="loginError" class="text-red-500 mt-2 hidden">Credenciales incorrectas. Inténtalo de nuevo.</p>
+        </div>
+    </div>
+
+    <script>
+        const validUser = "root";
+        const validPassword = "noroot";
+        const troops = []; // Array para almacenar las tropas
+
+        document.getElementById('loginButton').addEventListener('click', function() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === validUser && password === validPassword) {
+                document.getElementById('loginContent').classList.add('hidden');
+                document.getElementById('mainContent').classList.remove('hidden');
+                document.getElementById('activityContent').classList.remove('hidden'); // Mostrar Actividad Actual
+                updateTroopList(); // Actualizar la lista de tropas al iniciar sesión
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('manageTroopsTab').addEventListener('click', function() {
+            document.getElementById('activityContent').classList.add('hidden');
+            document.getElementById('formContent').classList.add('hidden');
+            document.getElementById('manageTroopsContent').classList.remove('hidden');
+        });
+
+        document.getElementById('activityTab').addEventListener('click', function() {
+            document.getElementById('manageTroopsContent').classList.add('hidden');
+            document.getElementById('formContent').classList.add('hidden');
+            document.getElementById('activityContent').classList.remove('hidden');
+        });
+
+        document.getElementById('formTab').addEventListener('click', function() {
+            document.getElementById('manageTroopsContent').classList.add('hidden');
+            document.getElementById('activityContent').classList.add('hidden');
+            document.getElementById('formContent').classList.remove('hidden');
+            updateTroopSelects(); // Actualizar el desplegable de tropas
+        });
+
+        document.getElementById('addTroopButton').addEventListener('click', function() {
+            const troopName = document.getElementById('newTroopName').value;
+            if (troopName) {
+                troops.push({ name: troopName, ents: 0, roles: 0, missions: 0, miniroles: 0, try: 0, caps: 0, status: 'Activo', requirements: 'N/A', officer: 'N/A' });
+                document.getElementById('newTroopName').value = '';
+                updateTroopList();
+                updateTroopSelects();
+                // Send data to the database
+                fetch('troops.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        action: 'add',
+                        name: troopName,
+                        ents: 0,
+                        roles: 0,
+                        missions: 0,
+                        miniroles: 0,
+                        try: 0,
+                        caps: 0,
+                        status: 'Activo',
+                        requirements: 'N/A',
+                        officer: 'N/A'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    updateTroopList(); // Refresh the troop list after adding
+                })
+                .catch(error => console.error('Error adding troop:', error));
+            }
+        });
+
+        document.getElementById('removeTroopButton').addEventListener('click', function() {
+            const troopSelect = document.getElementById('removeTroopSelect');
+            const selectedTroop = troopSelect.value;
+            if (selectedTroop) {
+                const troopIndex = troops.findIndex(t => t.name === selectedTroop);
+                if (troopIndex > -1) {
+                    troops.splice(troopIndex, 1); // Eliminar la tropa del array
+                    updateTroopList();
+                    updateTroopSelects();
+                    // Send delete request to the database
+                    fetch('troops.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams({
+                            action: 'delete',
+                            name: selectedTroop
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                    })
+                    .catch(error => console.error('Error deleting troop:', error));
+                }
+            }
+        });
+
+        document.getElementById('modifyTroopButton').addEventListener('click', function() {
+            const troopSelect = document.getElementById('modifyTroopSelect');
+            const selectedTroop = troopSelect.value;
+            const newTroopName = document.getElementById('newTroopNameModify').value;
+            if (selectedTroop && newTroopName) {
+                const troop = troops.find(t => t.name === selectedTroop);
+                if (troop) {
+                    troop.name = newTroopName; // Actualizar el nombre de la tropa
+                    updateTroopList();
+                    updateTroopSelects();
+                    // Send update request to the database
+                    fetch('troops.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams({
+                            action: 'update',
+                            oldName: selectedTroop,
+                            newName: newTroopName
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                    })
+                    .catch(error => console.error('Error updating troop:', error));
+                }
+            }
+        });
+
+        function updateTroopList() {
+            const troopList = document.getElementById('troopList');
+            troopList.innerHTML = ''; // Limpiar la lista actual
+            troops.forEach(troop => {
+                const troopDiv = document.createElement('div');
+                troopDiv.className = 'bg-green-700 p-4 rounded-lg mb-2';
+                troopDiv.innerHTML = `
+                    <h2 class="text-xl font-semibold">${troop.name}</h2>
+                    <p>Ents: ${troop.ents}</p>
+                    <p>Roles PJ: ${troop.roles}</p>
+                    <p>Misiones: ${troop.missions}</p>
+                    <p>Miniroles: ${troop.miniroles}</p>
+                    <p>Try: ${troop.try}</p>
+                    <p>Caps: ${troop.caps}</p>
+                    <p>Estado: ${troop.status}</p>
+                    <p>Requisitos: ${troop.requirements}</p>
+                    <p>Oficial a cargo: ${troop.officer}</p>
+                `;
+                troopList.appendChild(troopDiv);
+            });
+        }
+
+        function updateTroopSelects() {
+            const removeTroopSelect = document.getElementById('removeTroopSelect');
+            const modifyTroopSelect = document.getElementById('modifyTroopSelect');
+            const troopSelect = document.getElementById('troopSelect');
+            removeTroopSelect.innerHTML = '<option value="" disabled selected>Seleccionar Tropa</option>';
+            modifyTroopSelect.innerHTML = '<option value="" disabled selected>Seleccionar Tropa</option>';
+            troopSelect.innerHTML = '<option value="" disabled selected>Seleccionar Tropa</option>';
+            troops.forEach(troop => {
+                const optionRemove = document.createElement('option');
+                optionRemove.value = troop.name;
+                optionRemove.textContent = troop.name;
+                removeTroopSelect.appendChild(optionRemove);
+
+                const optionModify = document.createElement('option');
+                optionModify.value = troop.name;
+                optionModify.textContent = troop.name;
+                modifyTroopSelect.appendChild(optionModify);
+
+                const optionTroop = document.createElement('option');
+                optionTroop.value = troop.name;
+                optionTroop.textContent = troop.name;
+                troopSelect.appendChild(optionTroop);
+            });
+        }
+
+        troopSelect.addEventListener('change', function() {
+            const selectedTroop = troopSelect.value;
+            const troop = troops.find(t => t.name === selectedTroop);
+            if (troop) {
+                document.getElementById('troopDetails').classList.remove('hidden');
+                document.getElementById('ents').value = troop.ents;
+                document.getElementById('roles').value = troop.roles;
+                document.getElementById('missions').value = troop.missions;
+                document.getElementById('miniroles').value = troop.miniroles;
+                document.getElementById('try').value = troop.try;
+                document.getElementById('caps').value = troop.caps;
+                document.getElementById('status').value = troop.status;
+                document.getElementById('requirements').value = troop.requirements;
+                document.getElementById('officer').value = troop.officer;
+            } else {
+                document.getElementById('troopDetails').classList.add('hidden');
+            }
+        });
+
+        document.getElementById('saveTroopButton').addEventListener('click', function() {
+            const selectedTroop = troopSelect.value;
+            const troop = troops.find(t => t.name === selectedTroop);
+            if (troop) {
+                troop.ents = parseInt(document.getElementById('ents').value) || 0;
+                troop.roles = parseInt(document.getElementById('roles').value) || 0;
+                troop.missions = parseInt(document.getElementById('missions').value) || 0;
+                troop.miniroles = parseInt(document.getElementById('miniroles').value) || 0;
+                troop.try = parseInt(document.getElementById('try').value) || 0;
+                troop.caps = parseInt(document.getElementById('caps').value) || 0;
+                troop.status = document.getElementById('status').value;
+                troop.requirements = document.getElementById('requirements').value;
+                troop.officer = document.getElementById('officer').value;
+                updateTroopList();
+                // Send update request to the database
+                fetch('troops.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        action: 'update',
+                        name: selectedTroop,
+                        ents: troop.ents,
+                        roles: troop.roles,
+                        missions: troop.missions,
+                        miniroles: troop.miniroles,
+                        try: troop.try,
+                        caps: troop.caps,
+                        status: troop.status,
+                        requirements: troop.requirements,
+                        officer: troop.officer
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => console.error('Error updating troop:', error));
+            }
+        });
+    </script>
+</body>
+</html>
